@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>한혜윰 고성오광대 과장 역할 테스트</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts Inter & Jua for playful Korean headings -->
+    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+        .font-jua {
+            font-family: 'Jua', sans-serif;
+        }
+        /* Custom scrollbar and smooth transition effects */
+        .fade-in {
+            animation: fadeIn 0.4s ease-in-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-950 flex items-center justify-center p-4 sm:p-6">
+
+    <div id="app" class="w-full max-w-xl bg-slate-900/80 backdrop-blur-xl border border-slate-800 rounded-3xl shadow-2xl overflow-hidden p-6 sm:p-8 relative">
+        
+        <!-- Header / Logo -->
+        <div class="text-center mb-8">
+            <span class="inline-block bg-amber-500/10 text-amber-400 text-xs font-semibold px-3 py-1 rounded-full mb-3 border border-amber-500/20">
+                🎭 한혜윰 탈춤 동아리
+            </span>
+            <h1 class="font-jua text-2xl sm:text-3xl text-amber-100 tracking-wide mb-2">
+                고성오광대 과장 역할 테스트
+            </h1>
+            <p class="text-slate-400 text-sm">
+                나에게 찰떡인 고성오광대 배역을 찾아보세요!
+            </p>
+        </div>
+
+        <!-- Progress Bar -->
+        <div id="progress-container" class="w-full bg-slate-800 h-2 rounded-full mb-6 hidden">
+            <div id="progress-bar" class="bg-amber-500 h-2 rounded-full transition-all duration-300" style="width: 50%;"></div>
+        </div>
+
+        <!-- Question / Content Area -->
+        <div id="quiz-container" class="fade-in">
+            <!-- Dynamically injected via JS -->
+        </div>
+
+    </div>
+
+    <script>
+        // Quiz Data Structure based strictly on user's exact specification
+        const quizData = {
+            q1: {
+                title: "한혜윰에서 가장 해보고 싶은 활동은?",
+                options: [
+                    { text: "1번. 춤을 위주로 멋진 무대를 즐기고 싶어!", next: "branchA" },
+                    { text: "2번. 대사를 위주로 극을 이끌고 싶어!", next: "branchB" },
+                    { text: "3번. 춤과 대사, 양쪽 다 매력 터지게 해보고 싶어!", next: "branchC" },
+                    { text: "4번. 신명 나는 전통 가락으로 판을 잡는 악기를 해보고 싶어!", next: "branchD" }
+                ]
+            },
+            branchA: {
+                title: "춤을 위주로 선택한 당신!",
+                subtitle: "춤을 위주로 멋지게 추고 싶은 당신! 혼자 무대를 장악하고 싶나요, 아니면 함께 어우러지고 싶나요?",
+                options: [
+                    { 
+                        text: "1번. 난 혼자서 과장을 묵직하게 이끌고 싶어!", 
+                        result: {
+                            title: "[제1과장 - 문둥이]",
+                            desc: "슬픔을 흥으로 승화시키는 진정한 춤꾼! 혼자 북을 치며 무대의 오프닝과 한을 책임지는 멋진 솔로 플레이어 성향입니다.",
+                            tag: "제1과장 문둥이마당"
+                        }
+                    },
+                    { 
+                        text: "2번. 아니, 난 사람들과 함께 추고 싶어!", 
+                        result: {
+                            title: "[제4과장 - 승려]",
+                            desc: "춤판이 벌어지면 눈이 돌아가는 화려한 스텝의 소유자! 세상의 유혹에 빠진 흥겨운 파계승처럼 무대를 활개 치고 싶어 하는 당신입니다.",
+                            tag: "제4과장 승무마당"
+                        }
+                    }
+                ]
+            },
+            branchB: {
+                title: "대사 위주를 선택한 당신!",
+                subtitle: "대사를 위주로 해보고 싶은 당신! 제5과장(제밀주마당)에서 가장 끌리는 캐릭터를 골라주세요.",
+                options: [
+                    { 
+                        text: "1번. 난 가부장적이고 어쩐지 하남자(?)스러운 양반을 해보고 싶어.", 
+                        result: {
+                            title: "[제5과장 - 양반]",
+                            desc: "옆자리가 허전해 여자를 구했다는 몹쓸 말을 하는 능청스럽고 뻔뻔한 캐릭터! 특유의 연기로 많은 이들에게 야유를 받는 재질입니다.",
+                            tag: "제5과장 제밀주마당"
+                        }
+                    },
+                    { 
+                        text: "2번. 난 양반을 찾아 팔도를 다녔던 큰어미가 하고 싶어.", 
+                        result: {
+                            title: "[제5과장 - 큰어미]",
+                            desc: "어쩐지 우스꽝스러운 춤과 노래를 부르며 등장하지만, 극의 긴장감을 쥐락펴락하는 비운(?)의 본처! 몰입도 높은 연기를 보여줄 당신입니다.",
+                            tag: "제5과장 제밀주마당"
+                        }
+                    },
+                    { 
+                        text: "3번. 난 양반의 둘째부인이자 아이를 낳는 작은어미를 하고 싶어.", 
+                        result: {
+                            title: "[제5과장 - 작은어미]",
+                            desc: "극의 갈등 중심에 서 있는 톡톡 튀는 첩 역할! 감정선과 위트 있는 대사 소화력이 모두 필요한 핵심 씬스틸러입니다.",
+                            tag: "제5과장 제밀주마당"
+                        }
+                    },
+                    { 
+                        text: "4번. 나는 양반이 나를 부르면 '야~~~' 하고 뛰어가는 마당쇠를 하고 싶어.", 
+                        result: {
+                            title: "[제5과장 - 마당쇠]",
+                            desc: "양반의 부름에 빛의 속도로 달려가는 엉뚱한 하인! 찰진 추임새와 몸 개그로 관객을 사로잡을 유쾌한 캐릭터입니다.",
+                            tag: "제5과장 제밀주마당"
+                        }
+                    },
+                    { 
+                        text: "5번. 나는 아이를 낳을 때 옆에서 도움을 주는 황봉사를 하고 싶어.", 
+                        result: {
+                            title: "[제5과장 - 황봉사]",
+                            desc: "출산 장면에서 범상치 않은 존재감을 뽐내는 점쟁이 봉사! 짧지만 강렬한 한 방으로 무대를 뒤집어 놓을 개성 만점 캐릭터입니다.",
+                            tag: "제5과장 제밀주마당"
+                        }
+                    }
+                ]
+            },
+            branchC: {
+                title: "춤과 대사 둘 다 놓칠 수 없는 당신!",
+                subtitle: "두 마리 토끼를 다 잡고 싶은 당신! 어떤 판에서 노는 게 더 끌리시나요?",
+                options: [
+                    { 
+                        text: "1번. 답답한 양반들을 상대로 팩폭을 날리며 판을 뒤흔들고 싶어!", 
+                        result: {
+                            title: "[제2과장 - 말뚝이]",
+                            desc: "동아리의 재간둥이이자 사이다 입담꾼! 춤과 재치 있는 대사로 양반들을 사정없이 조롱하며 극의 중심을 잡는 최고의 리더형입니다.",
+                            tag: "제2과장 오광대마당"
+                        }
+                    },
+                    { 
+                        text: "2번. 상상 속의 괴물처럼 독보적이고 엉뚱한 매력으로 시선을 강탈하고 싶어!", 
+                        result: {
+                            title: "[제3과장 - 비비]",
+                            desc: "어디서도 본 적 없는 인싸 재질의 캐릭터! 괴상하지만 매력 넘치는 몸짓과 대사로 무대를 완전히 장악해 버리는 당신입니다.",
+                            tag: "제3과장 비비마당"
+                        }
+                    },
+                    { 
+                        text: "3번: 나는 답답한 양반이 되어 여럿 여자와 졸부가 될거야!", 
+                        result: {
+                            title: "[제2과장 - 원양반]",
+                            desc: "말뚝이에게 팩폭을 얻어맞는 캐릭터입니다. 졸부가 된 자신의 자랑이 남들이 들을 땐 수치스럽지만 본인은 자랑스럽게 떠벌대는 역할입니다.",
+                            tag: "제2과장 오광대마당"
+                        }
+                    },
+                    { 
+                        text: "4번: 나는 괴물과 대치하고 싶어!", 
+                        result: {
+                            title: "[제3과장 - 비비양반]",
+                            desc: "비비양반은 특유의 능청함으로 무시무시한 괴물 비비를 구워삶는 캐릭터입니다. 재치있고 관객과 소통을 하고 싶다면 이 캐릭터를 추천합니다.",
+                            tag: "제3과장 비비마당"
+                        }
+                    }
+                ]
+            },
+            branchD: {
+                title: "신명 나는 전통 가락으로 판을 잡는 악사를 선택한 당신!",
+                subtitle: "풍물과 탈춤의 심장, 악기를 골라주세요! 내가 맡고 싶은 악기는?",
+                options: [
+                    { 
+                        text: "1번. 판의 시작과 끝을 알리는 카리스마 리더! 시원하게 판을 열고 이끌고 싶어.", 
+                        result: {
+                            title: "[악사 - 꽹과리]",
+                            desc: "꽹과리는 전체 가락을 이끄는 지휘자이자 상쇠의 악기죠! 센스 있게 전체 분위기를 쥐락펴락하고 싶은 리더십 만렙 당신에게 딱입니다.",
+                            tag: "전통 악사 (꽹과리)"
+                        }
+                    },
+                    { 
+                        text: "2번. 풍성한 가락으로 판을 든든하게 받쳐주는 흥의 마법사무기!", 
+                        result: {
+                            title: "[악사 - 장구]",
+                            desc: "덩기덕 쿵덕~ 화려한 가락과 잔가락으로 춤판의 호흡을 책임지는 중심축! 리듬감과 흥을 동시에 잡고 싶은 당신에게 제격입니다.",
+                            tag: "전통 악사 (장구)"
+                        }
+                    },
+                    { 
+                        text: "3번. 쿵! 쿵! 가슴을 울리는 묵직한 타격감과 에너지로 판을 채우고 싶어.", 
+                        result: {
+                            title: "[악사 - 북]",
+                            desc: "묵직한 베이스로 탈춤의 역동적인 움직임과 에너지를 극대화하는 파워풀한 악기! 무대 위에서 온몸으로 리듬을 느끼고 싶어 하는 당신입니다.",
+                            tag: "전통 악사 (북)"
+                        }
+                    },
+                    { 
+                        text: "4번. 웅장한 울림으로 결정적 순간에 판의 분위기를 확 뒤집고 싶어.", 
+                        result: {
+                            title: "[악사 - 징]",
+                            desc: "둥~ 하고 울려 퍼지는 깊은 여운으로 전체 흐름에 묵직한 한 방을 더해주는 징! 결정적인 순간에 존재감을 뿜어내는 묵묵한 씬스틸러입니다.",
+                            tag: "전통 악사 (징)"
+                        }
+                    }
+                ]
+            }
+        };
+
+        let currentStep = 'q1';
+        let userResult = null;
+
+        const quizContainer = document.getElementById('quiz-container');
+        const progressBar = document.getElementById('progress-bar');
+        const progressContainer = document.getElementById('progress-container');
+
+        function renderQuiz() {
+            quizContainer.innerHTML = '';
+            quizContainer.classList.remove('fade-in');
+            void quizContainer.offsetWidth; // trigger reflow
+            quizContainer.classList.add('fade-in');
+
+            if (currentStep === 'q1') {
+                progressContainer.classList.add('hidden');
+                const data = quizData.q1;
+                let html = `
+                    <h2 class="font-jua text-xl text-amber-200 mb-6 leading-snug">${data.title}</h2>
+                    <div class="space-y-3">
+                `;
+                data.options.forEach((opt, idx) => {
+                    html += `
+                        <button onclick="handleSelect('${opt.next}')" class="w-full text-left p-4 bg-slate-800/80 hover:bg-amber-600/20 hover:border-amber-500 border border-slate-700 rounded-2xl text-slate-200 font-medium transition-all duration-200 shadow-sm flex items-center justify-between group">
+                            <span>${opt.text}</span>
+                            <span class="text-slate-500 group-hover:text-amber-400 transition-colors">➔</span>
+                        </button>
+                    `;
+                });
+                html += `</div>`;
+                quizContainer.innerHTML = html;
+            } else if (quizData[currentStep]) {
+                progressContainer.classList.remove('hidden');
+                progressBar.style.width = '75%';
+                const data = quizData[currentStep];
+                let html = `
+                    <div class="mb-4">
+                        <button onclick="currentStep='q1'; renderQuiz();" class="text-xs text-amber-400 hover:underline mb-2 inline-block">← 처음으로 돌아가기</button>
+                        <h2 class="font-jua text-lg text-amber-200 mb-1">${data.title}</h2>
+                        <p class="text-slate-400 text-sm">${data.subtitle}</p>
+                    </div>
+                    <div class="space-y-3 max-h-[380px] overflow-y-auto pr-1">
+                `;
+                data.options.forEach((opt, idx) => {
+                    // Safe stringify for result object or index handler
+                    const resultDataStr = JSON.stringify(opt.result).replace(/"/g, '&quot;');
+                    html += `
+                        <button onclick="showResult(${resultDataStr})" class="w-full text-left p-3.5 bg-slate-800/80 hover:bg-amber-600/20 hover:border-amber-500 border border-slate-700 rounded-2xl text-slate-200 text-sm font-medium transition-all duration-200 shadow-sm flex items-center justify-between group">
+                            <span>${opt.text}</span>
+                            <span class="text-slate-500 group-hover:text-amber-400 transition-colors">➔</span>
+                        </button>
+                    `;
+                });
+                html += `</div>`;
+                quizContainer.innerHTML = html;
+            }
+        }
+
+        function handleSelect(nextKey) {
+            currentStep = nextKey;
+            renderQuiz();
+        }
+
+        function showResult(result) {
+            userResult = result;
+            progressContainer.classList.add('hidden');
+            quizContainer.innerHTML = '';
+            quizContainer.classList.remove('fade-in');
+            void quizContainer.offsetWidth;
+            quizContainer.classList.add('fade-in');
+
+            let html = `
+                <div class="text-center">
+                    <span class="inline-block bg-amber-500 text-slate-950 font-bold text-xs px-3 py-1 rounded-full mb-3 shadow-md">
+                        ✨ 나의 추천 역할 당첨! ✨
+                    </span>
+                    <div class="bg-gradient-to-b from-slate-800 to-slate-900 border border-amber-500/30 p-6 rounded-3xl shadow-xl mb-6 text-left relative overflow-hidden">
+                        <div class="absolute -right-10 -bottom-10 text-9xl opacity-5 select-none font-jua">탈</div>
+                        <span class="text-xs font-semibold text-amber-400 uppercase tracking-wider">${result.tag}</span>
+                        <h3 class="font-jua text-2xl text-amber-100 mt-1 mb-3">${result.title}</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed">${result.desc}</p>
+                    </div>
+
+                    <div class="space-y-3">
+                        <button onclick="shareResult()" class="w-full py-3.5 px-4 bg-amber-500 hover:bg-amber-400 text-slate-950 font-jua text-lg rounded-2xl shadow-lg transition-all duration-200 flex items-center justify-center space-x-2">
+                            <span>📋 결과 복사 및 공유하기</span>
+                        </button>
+                        <button onclick="restartQuiz()" class="w-full py-3 px-4 bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium text-sm rounded-2xl border border-slate-700 transition-all duration-200">
+                            🔄 다시 테스트하기
+                        </button>
+                    </div>
+                </div>
+            `;
+            quizContainer.innerHTML = html;
+        }
+
+        function restartQuiz() {
+            currentStep = 'q1';
+            userResult = null;
+            renderQuiz();
+        }
+
+        function shareResult() {
+            if (!userResult) return;
+            const shareText = `🎭 [한혜윰 고성오광대 역할 테스트]\n\n나의 추천 역할은 바로바로...\n👉 ${userResult.title} (${userResult.tag})\n\n"${userResult.desc}"\n\n너도 한혜윰에서 탈춤 역할 고르러 가볼래?`;
+            
+            // Clipboard fallback using document.execCommand if navigator.clipboard is restricted
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(shareText).then(() => {
+                    showToast("결과 내용이 클립보드에 복사되었습니다! 친구들에게 공유해보세요 🎉");
+                }).catch(() => {
+                    fallbackCopy(shareText);
+                });
+            } else {
+                fallbackCopy(shareText);
+            }
+        }
+
+        function fallbackCopy(text) {
+            const textarea = document.createElement("textarea");
+            textarea.value = text;
+            textarea.style.position = "fixed";  // Avoid scrolling to bottom
+            document.body.appendChild(textarea);
+            textarea.focus();
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                showToast("결과 내용이 클립보드에 복사되었습니다! 친구들에게 공유해보세요 🎉");
+            } catch (err) {
+                showToast("복사에 실패했습니다. 내용을 직접 복사해주세요.");
+            }
+            document.body.removeChild(textarea);
+        }
+
+        function showToast(message) {
+            const existingToast = document.getElementById('toast-notification');
+            if (existingToast) existingToast.remove();
+
+            const toast = document.createElement('div');
+            toast.id = 'toast-notification';
+            toast.className = 'fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-slate-800 text-amber-300 text-xs sm:text-sm font-medium px-4 py-3 rounded-2xl shadow-2xl border border-amber-500/40 z-50 fade-in flex items-center space-x-2';
+            toast.innerHTML = `<span>${message}</span>`;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Initialize app on load
+        window.onload = function() {
+            renderQuiz();
+        };
+    </script>
+</body>
+</html>
